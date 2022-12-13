@@ -1,0 +1,128 @@
+# Configuration file for the generic part of the framework
+#
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# General settings
+# =====================================================================
+DEPLOYMENT_NAME: 'my_deployment'
+SOLUTION_PREFIX: 'pltv'
+# Service account for the deployment. It must be granted in all the GCP projects used
+SERVICE_ACCOUNT: 'service-account-xxx@developer.gserviceaccount.com'
+# Project for pub/sub & firestore
+DEFAULT_GCP_PROJECT: 'my_project'
+# Type gcloud compute regions list to find out the different values
+DEFAULT_GCP_REGION: 'europe-west1'
+# BQ settings to read the periodic data from
+BQ_DATA_SOURCE_GCP_PROJECT: 'my_datasource_project'
+BQ_DATA_SOURCE_DATA_SET: 'my_data_set'
+BQ_DATA_SOURCE_TABLES: 'just_table_name'
+# If data source table is sharded by date, set it to Y
+BQ_DATA_SOURCE_IS_SHARDED: 'N'
+# Enable processing of data in pandas dataframes. Values are Y|N. 
+# If this processing is turned off, the result of the extract queries
+# of the intermediate processing steps are written directly to the
+# output table instead of being loaded into a dataframe for processing.
+DATAFRAME_PROCESSING_ENABLED: 'Y'
+
+# BQ settings for LTV process
+# =====================================================================
+# If datasets are already created, set it to Y
+SKIP_LTV_DATASET_CREATION: 'Y'
+# Project where the intermediate tables and predictions will be stored
+BQ_LTV_GCP_PROJECT: 'my_project'
+# The broader region: i.e EU (use uppercase)
+BQ_LTV_GCP_BROAD_REGION: 'EU'
+# The BQ data set where to create the tables
+BQ_LTV_DATASET: 'my_data_set'
+# The BQ data transfer region
+BQ_LTV_TRANSFER_REGION: 'europe'
+
+# Model Settings
+# =====================================================================
+# The date when the model was generated. It will be used to label metadata
+MODEL_DATE: 'YYYYMMDD'
+# The model ID
+MODEL_ID: 'my_model_id'
+# The project where the model exists
+MODEL_GCP_PROJECT: 'my_project'
+# The model location. i.e eu (use lower case)
+MODEL_LOCATION: 'europe-west4'
+# The endpoint for automl i.e eu-automl.googleapis.com:443 | automl.googleapis.com:443
+MODEL_AUTOML_API_ENDPOINT: 'europe-west4-aiplatform.googleapis.com'
+
+# Polling & throttling settings
+# =====================================================================
+# How often the process will look for available periodic transaction table
+DATA_SOURCE_PERIODIC_TX_POLLER_CONFIG: '0 \*/1 \* \* \*'
+# How often the long running task poller will pick up tasks
+LONG_RUNNING_TASKS_POLLER_CONFIG: '\*/2 \* \* \* \*'
+# Max. age for a long running task or throttled task
+DISCARD_TASKS_OLDER_THAN_HOURS: '23'
+# How many tasks to be taken at a time from the throttling/long running tasks system
+MAX_TASKS_PER_POLL: '10'
+# The timezone to applu to the schedulers
+TIMEZONE: 'Europe/Madrid'
+# Minimum waiting time for prepare messages to wait in the throttling system
+DELAY_PREPARE_IN_SECONDS: '60'
+# Minimum waiting time for filter transactions messages to wait in the throttling system
+DELAY_FILTER_TRANSACTIONS_IN_SECONDS: '60'
+# Minimum waiting time for predict transactions messages to wait in the throttling system
+DELAY_PREDICT_TRANSACTIONS_IN_SECONDS: '60'
+# Minimum waiting time for predict transactions batch messages to wait in the throttling system
+DELAY_PREDICT_TRANSACTIONS_BATCH_IN_SECONDS: '300'
+# Minimum waiting time for filter transactions messages to wait in the throttling system
+DELAY_FILTER_TRANSACTIONS_PERIODIC_IN_SECONDS: '60'
+# Number of concurrent AutoML batch predict operations
+MAX_CONCURRENT_BATCH_PREDICT: '5'
+# Minimum minutes without prediction activity in firestore database, before stopping the LIVE model
+STOP_MODEL_WAITING_MINUTES: '30'
+# How long until a batch predict operation is considered to have timed out and its concurrent slot is released
+BATCH_PREDICT_TIMEOUT_SECONDS: '3600'
+
+
+
+#NO NEED TO CHANGE BELOW THE LINE
+# =====================================================================
+
+# Automatically filled settings on every deployment
+BQ_LTV_TRANSFER_PROJECT_ID: '988912752389'
+BQ_LTV_PERIODIC_TX_TRANSFER_ID: '5f8f8636-0000-2a63-8b5c-3c286d38a9b2'
+
+# BQ LTV tables: BEST DO NOT MODIFY
+BQ_LTV_ALL_PERIODIC_TX_TABLE: 'all_periodic_transactions'
+BQ_LTV_PREPARED_PERIODIC_TX_TABLE: 'prepared_periodic_transactions'
+BQ_LTV_FILTERED_TX_TABLE: 'filtered_periodic_transactions'
+BQ_LTV_PREDICTIONS_TABLE: 'predictions'
+BQ_LTV_METADATA_TABLE: 'metadata'
+BQ_LTV_TRAINING_DATA_FEATURES_TABLE: 'training_data_features'
+
+# Cloud Pub/Sub settings
+POLLING_PERIODIC_TX_TOPIC: 'it_is_polling_tx_time'
+POLLING_LONG_RUNNING_TASKS_TOPIC: 'it_is_polling_tasks_time'
+THROTTLER_TOPIC: 'throttle'
+DATA_EXTRACTED_TOPIC: 'data_extract_ready'
+DATA_PREPARED_TOPIC: 'data_prepared'
+PREDICT_TRANSACTIONS_BATCH_TOPIC: 'predict_transactions_batch'
+ENQUEUE_TASK_TOPIC: 'enqueue_task'
+POST_PROCESS_BATCH_PREDICTIONS_TOPIC: 'post_process_batch_predictions'
+
+#Firestore prefixes
+FST_PREPARE_COLLECTION: 'prepare_periodic_tx_tracking'
+FST_PREDICT_COLLECTION: 'prediction_tracking'
+FST_PREDICT_UNIT_COLLECTION: 'unitary_prediction_tracking'
+FST_LONG_RUNNING_TASKS_COLLECTION: 'long_running_tasks'
+
+
